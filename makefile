@@ -34,7 +34,7 @@ RUNTIME_PARAM = ""
 GIT_BASE = git@github.com
 GIT_USERNAME = TheBlueChameleon
 GIT_REPOSITORY = $(EXENAME)
-GIT_ADDITIONAL = "./makefile"
+GIT_ADDITIONAL = ./makefile ./.gitignore
 	# ./tex/*.tex ./makefile
 	# ... list files here that you want to be part of the repository that are not already part of the compilable stuff
 	# separate them by whitespaces
