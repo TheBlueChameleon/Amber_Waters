@@ -27,7 +27,6 @@ void unittest_gfxSystem() {
   };
   
   std::cout << "### GFX SYSTEM UNIT TEST" << std::endl;
-  
   initDisplay("GFX SYSTEM UNIT TEST");
   
   
@@ -59,19 +58,23 @@ void unittest_gfxSystem() {
     GfxBox_t box = {
       100, 100,
       300, 200,
-      {255,   0,   0},
-      {255, 255,   0},
-      {255, 255, 255},
+      gfxColor::RED,
+      gfxColor::GREEN,
+      gfxColor::WHITE,
       2,
       7
     };
     drawBoxedText("lorem ipsum", box);
     
-    fadeTransition(2000);
     
     showDisplay(true);
     
+    fadeTransition( 500);
+    
   std::cout << "done" << std::endl;
+  
+  
+  std::cout << "### GFX SYSTEM UNIT TEST DONE" << std::endl << std::endl;
 }
 // -------------------------------------------------------------------------- //
 void unittest_Animation() {
@@ -83,7 +86,13 @@ void unittest_Animation() {
     "./gfx-unittest/sea05.png"
   };
   
+  std::cout << "### CLASS ANIMATION UNIT TEST" << std::endl;
+  initDisplay("ANIMATION UNIT TEST");
+  
+  
   Animation ani(dataFiles);
   
   ani.show();
+  
+  std::cout << "### CLASS ANIMATION UNIT TEST DONE" << std::endl << std::endl;
 }

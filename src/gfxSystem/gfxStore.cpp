@@ -80,7 +80,8 @@ void  putImage(const int ID, int atX, int atY) {
 }
 // .......................................................................... //
 void showImage(const int ID) {
+  display.flush();
   display.display( store(ID) );
-  while (!display.is_closed() && !display.is_keyESC() ) {cimg::wait(20);}
+  while (!display.is_closed() && !display.is_key() ) {cimg::wait(20);}
 }
 // -------------------------------------------------------------------------- //

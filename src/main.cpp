@@ -15,11 +15,8 @@
 // proc
 
 int main () {
-//   unittest_gfxSystem();
-//   unittest_Animation();
-  
-  initDisplay("foo bar");
-  std::cout << keycode::KC_F2 << std::endl;
+  unittest_Animation();
+  unittest_gfxSystem();
   
   return 0;
 }

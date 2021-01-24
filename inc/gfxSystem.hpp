@@ -12,17 +12,28 @@
 #include <string>
 
 // ========================================================================== //
-// gfx types
+// gfx colors (gfxGlobals)
 
 using GfxColor_t = unsigned char[3];
+
+namespace gfxColor {
+  extern const GfxColor_t BLACK;
+  extern const GfxColor_t WHITE;
+  extern const GfxColor_t BLUE ;
+  extern const GfxColor_t GREEN;
+  extern const GfxColor_t RED  ;
+}
+
+// ========================================================================== //
+// gfx box (local)
 
 struct GfxBox_t {
   int x1, y1;
   int x2, y2;
   
-  GfxColor_t   fillColor = {  0,   0,   0};
-  GfxColor_t borderColor = {  0,   0,   0};
-  GfxColor_t   textColor = {255, 255, 255};
+  const unsigned char * fillColor   = gfxColor::BLACK;
+  const unsigned char * borderColor = gfxColor::BLACK;
+  const unsigned char * textColor   = gfxColor::WHITE;
   
   int borderWidth = 0;
   int margin = 0;
@@ -31,10 +42,6 @@ struct GfxBox_t {
 // ========================================================================== //
 // constants
 
-namespace gfxColor {
-  extern const GfxColor_t BLACK;
-  extern const GfxColor_t WHITE;
-}
 
 namespace keycode {
   extern const unsigned int KC_ESC        ;
@@ -157,19 +164,25 @@ void showImage(const int ID);
 // ========================================================================== //
 // display
 
-// .......................................................................... //
+// -------------------------------------------------------------------------- //
+// read metadata
+
+int getScrWidth ();
+int getScrHeight();
+
+// -------------------------------------------------------------------------- //
 // globals control
 
 void initDisplay(const std::string & title, int srcWidth = 800, int scrHeight = 600);
 void showDisplay(bool eternally = false);
 
-// .......................................................................... //
+// -------------------------------------------------------------------------- //
 // drawing primitives wrapper
 
 void clearDisplay (const GfxColor_t color = gfxColor::BLACK);
 void drawBoxedText(const std::string & text, const GfxBox_t box);
 
-// .......................................................................... //
+// -------------------------------------------------------------------------- //
 // scene transitions (TODO)
 
 void fadeTransition(const int timeInMS, const GfxColor_t color = gfxColor::BLACK);
@@ -193,3 +206,7 @@ void         display_flush             ();
 
 
 #endif
+
+// .......................................................................... //
+// -------------------------------------------------------------------------- //
+// ========================================================================== //

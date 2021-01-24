@@ -18,17 +18,19 @@
 class Animation {
 private:
   std::vector<int> frames;
+  int              frameCount   = 0;
+  int              currentFrame = 0;
   
   
 public:
-  // -------------------------------------------------------------------------- //
+  // ------------------------------------------------------------------------ //
   // CTor, DTor
   
   Animation(std::vector<int>         frames);
   Animation(std::vector<std::string> filenames);
   
-  // -------------------------------------------------------------------------- //
-  // output test
+  // ------------------------------------------------------------------------ //
+  // onscreen features
   
   void show(double fps = 60.0);
 };

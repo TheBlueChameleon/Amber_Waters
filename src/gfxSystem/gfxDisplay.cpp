@@ -20,6 +20,12 @@
 #define THROWTEXT(msg) ("RUNTIME EXCEPTION IN "s + (__PRETTY_FUNCTION__) + "\n"s + msg)
 
 // ========================================================================== //
+// read metadata
+
+int getScrWidth () {return scrWidth;}
+int getScrHeight() {return scrHeight;}
+
+// ========================================================================== //
 // globals control
 
 void initDisplay(const std::string & title, int newScrWidth, int newScrHeight) {
@@ -32,8 +38,15 @@ void initDisplay(const std::string & title, int newScrWidth, int newScrHeight) {
   scrWidth  = newScrWidth;
   scrHeight = newScrHeight;
   
-  display.resize(scrWidth, scrHeight);
-  display.set_title(title.data());
+//   if (display.is_closed()) {
+//     display = CImgDisplay(scrWidth, scrHeight,
+//                           title.data()
+//     );
+//     
+//   } else {
+    display.resize(scrWidth, scrHeight);
+    display.set_title( title.data() );
+//   }
   
   showBuffer = Image_t(scrWidth, scrHeight, 1, 3, 0);
   display.display( showBuffer );
@@ -42,7 +55,12 @@ void initDisplay(const std::string & title, int newScrWidth, int newScrHeight) {
 void showDisplay(bool eternally) {
   display.display( showBuffer );
   display.show();
-  if (eternally) {while (!display.is_closed() && !display.is_keyESC() ) {cimg::wait(20);}}
+  
+  
+  if (eternally) {
+    display.flush();
+    while (!display.is_closed() && !display.is_key() ) {cimg::wait(20);}
+  }
 }
 // .......................................................................... //
 

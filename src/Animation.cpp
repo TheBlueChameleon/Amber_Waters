@@ -21,6 +21,8 @@
 
 #define THROWTEXT(msg) ("RUNTIME EXCEPTION IN "s + (__PRETTY_FUNCTION__) + "\n"s + msg)
 
+#define ADVANCEFRAME() {++currentFrame; currentFrame -= (currentFrame == frameCount) * frameCount;}
+
 // ========================================================================== //
 // CTor / DTor
 
@@ -35,28 +37,42 @@ Animation::Animation(std::vector<int> frameIDs) {
     }
   }
   
-  frames = frameIDs;
+  frames     = frameIDs;
+  frameCount = frameIDs.size();
 }
 // .......................................................................... //
 Animation::Animation(std::vector<std::string> filenames) {
   for (auto & file : filenames) {frames.push_back( loadImageToStore(file) );}
+  frameCount = frames.size();
 }
 
 // ========================================================================== //
-// output test
+// onscreen features
 
 void Animation::show(double fps) {
-  std::cout << "before wait" << std::endl;
+  int delay = 1000 / fps;
   
-  cimg_wait(1000);
+  GfxBox_t box = {
+    getScrWidth() - 100, getScrHeight() - 20,
+    getScrWidth() -   0, getScrHeight() -  0,
+    gfxColor::BLUE,
+    gfxColor::WHITE,
+    gfxColor::WHITE,
+    1,
+    3
+  };
   
-  std::cout << "post wait" << std::endl;
-//   while (!display.is_closed() && !display.is_keyESC() ) {
-//     
-//     auto frameID = frames[0];
-//     putImage( store(frameID) );
-//     showDisplay();
-//     
-//     cimg::wait(20);
-//   }
+  display_flush();
+  
+  while (!display_is_closed() && !display_is_any_key() ) {
+    
+    putImage( frames[currentFrame] );
+    
+    drawBoxedText("fps: "s + std::to_string(display_frames_per_second()), box);
+    
+    showDisplay();
+    
+    ADVANCEFRAME();
+    cimg_wait(delay);
+  }
 }

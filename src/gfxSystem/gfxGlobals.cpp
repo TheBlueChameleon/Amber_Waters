@@ -19,6 +19,9 @@ using Image_t = CImg<unsigned char>;
 namespace gfxColor {
   const GfxColor_t BLACK = {  0,   0,   0};
   const GfxColor_t WHITE = {255, 255, 255};
+  const GfxColor_t BLUE  = {  0,   0, 255};
+  const GfxColor_t GREEN = {  0, 255,   0};
+  const GfxColor_t RED   = {255,   0,   0};
 }
 
 // .......................................................................... //
