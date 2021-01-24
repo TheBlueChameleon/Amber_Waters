@@ -30,9 +30,9 @@ using Image_t = CImg<unsigned char>;
 // -------------------------------------------------------------------------- //
 // gfx store
 
-extern CImgList   <unsigned char> store;
-extern std::vector<std::string>   filenames;
-extern int                        storeSize;
+extern CImgList   <unsigned char> gfxStore;
+extern std::vector<std::string>   gfxFilenames;
+extern int                        gfxStoreSize;
 
 // -------------------------------------------------------------------------- //
 // display

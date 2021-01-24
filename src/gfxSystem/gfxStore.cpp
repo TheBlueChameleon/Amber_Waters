@@ -30,14 +30,14 @@
 // gfx store
 
 // -------------------------------------------------------------------------- //
-// read metadata
+// getter
 
-int getStoreSize() {return storeSize;}
+int getStoreSize() {return gfxStoreSize;}
 
 // -------------------------------------------------------------------------- //
-// list manipulation
+// store state control
 
-int loadImageToStore(const std::string & filename) {
+int gfxStore_load (const std::string & filename) {
   // attempts to load filename into memory
   // returns store ID on success
   // throws an error, otherwise.
@@ -50,18 +50,19 @@ int loadImageToStore(const std::string & filename) {
   }
   
   // check whether filename already in store
-  auto inStoreIterator = std::find(filenames.begin(), filenames.end(), filename);
+  auto inStoreIterator = std::find(gfxFilenames.begin(), gfxFilenames.end(), filename);
   
-  if ( inStoreIterator == filenames.end() ) {         // not yet in store -- add
+  if ( inStoreIterator == gfxFilenames.end() ) {         // not yet in store -- add
     auto newImg = Image_t(filename.data());
-    store.push_back(newImg);
+    gfxStore.push_back(newImg);
     
-    filenames.push_back(filename);
+    gfxFilenames.push_back(filename);
     
-    return storeSize++;
+    return gfxStoreSize++;
     
   } else {                                         // otherwise -- repeat old ID
-    return std::distance(filenames.begin(), inStoreIterator);
+    return std::distance(gfxFilenames.begin(), inStoreIterator);
+    
   }
   
 }
@@ -70,18 +71,18 @@ int loadImageToStore(const std::string & filename) {
 // onscreen features
 
 void  putImage(const int ID, int atX, int atY) {
-  if ( (ID < 0) || (ID >= storeSize) ) {
+  if ( (ID < 0) || (ID >= gfxStoreSize) ) {
     throw std::out_of_range(THROWTEXT(
       "  Invalid GfxStore ID: "s + std::to_string(ID)
     ));
   }
   
-  showBuffer.draw_image(atX, atY, store(ID) );
+  showBuffer.draw_image(atX, atY, gfxStore(ID) );
 }
 // .......................................................................... //
 void showImage(const int ID) {
   display.flush();
-  display.display( store(ID) );
+  display.display( gfxStore(ID) );
   while (!display.is_closed() && !display.is_key() ) {cimg::wait(20);}
 }
 // -------------------------------------------------------------------------- //

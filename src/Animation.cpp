@@ -42,9 +42,16 @@ Animation::Animation(std::vector<int> frameIDs) {
 }
 // .......................................................................... //
 Animation::Animation(std::vector<std::string> filenames) {
-  for (auto & file : filenames) {frames.push_back( loadImageToStore(file) );}
+  for (auto & file : filenames) {frames.push_back( gfxStore_load(file) );}
   frameCount = frames.size();
 }
+
+// ========================================================================== //
+// getter / setter
+
+int                      Animation::getFrameCount() const {return frameCount;}
+// .......................................................................... //
+const std::vector<int> & Animation::getFrames    () const {return frames;}
 
 // ========================================================================== //
 // onscreen features

@@ -32,7 +32,7 @@ void unittest_gfxSystem() {
   
   std::cout << "loading gfx files..." << std::flush;
     
-    for (auto & file : dataFiles) {loadImageToStore(file);}
+    for (auto & file : dataFiles) {gfxStore_load(file);}
     
   std::cout << "done!" << std::endl;
   

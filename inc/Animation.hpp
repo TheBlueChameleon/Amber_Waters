@@ -30,6 +30,12 @@ public:
   Animation(std::vector<std::string> filenames);
   
   // ------------------------------------------------------------------------ //
+  // getter / setter
+  
+  int                      getFrameCount() const;
+  const std::vector<int> & getFrames() const;
+  
+  // ------------------------------------------------------------------------ //
   // onscreen features
   
   void show(double fps = 60.0);

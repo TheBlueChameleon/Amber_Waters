@@ -42,7 +42,6 @@ struct GfxBox_t {
 // ========================================================================== //
 // constants
 
-
 namespace keycode {
   extern const unsigned int KC_ESC        ;
   extern const unsigned int KC_F1         ;
@@ -146,14 +145,14 @@ extern unsigned long (* cimg_toc)  (void);
 // gfx store
 
 // -------------------------------------------------------------------------- //
-// read metadata
+// getter
 
 int getStoreSize();
 
 // -------------------------------------------------------------------------- //
-// store manipulation
+// store state control
   
-int loadImageToStore(const std::string & filename);
+int gfxStore_load (const std::string & filename);
 
 // -------------------------------------------------------------------------- //
 // onscreen features
@@ -165,13 +164,13 @@ void showImage(const int ID);
 // display
 
 // -------------------------------------------------------------------------- //
-// read metadata
+// getter
 
 int getScrWidth ();
 int getScrHeight();
 
 // -------------------------------------------------------------------------- //
-// globals control
+// display state control
 
 void initDisplay(const std::string & title, int srcWidth = 800, int scrHeight = 600);
 void showDisplay(bool eternally = false);

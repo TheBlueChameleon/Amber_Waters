@@ -120,9 +120,9 @@ namespace keycode {
 // -------------------------------------------------------------------------- //
 // gfxStore globals
 
-CImgList   <unsigned char> store;
-std::vector<std::string>   filenames;
-int                        storeSize = 0;
+CImgList <unsigned char>   gfxStore;
+std::vector<std::string>   gfxFilenames;
+int                        gfxStoreSize = 0;
 
 // -------------------------------------------------------------------------- //
 // gfxDisplay globals

@@ -20,13 +20,13 @@
 #define THROWTEXT(msg) ("RUNTIME EXCEPTION IN "s + (__PRETTY_FUNCTION__) + "\n"s + msg)
 
 // ========================================================================== //
-// read metadata
+// getter
 
 int getScrWidth () {return scrWidth;}
 int getScrHeight() {return scrHeight;}
 
 // ========================================================================== //
-// globals control
+// display state control
 
 void initDisplay(const std::string & title, int newScrWidth, int newScrHeight) {
   if ( (newScrWidth < 1) || (newScrHeight < 1) ) {
