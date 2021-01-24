@@ -1,23 +1,25 @@
+// ========================================================================== //
+// dependencies
+
+// STL
 #include <iostream>
 
+#include <vector>
+#include <string>
+
+// own
+#include "unittests.hpp"
 #include "gfxSystem.hpp"
 
+// ========================================================================== //
+// proc
+
 int main () {
-  std::cout << "runtime." << std::endl;
+//   unittest_gfxSystem();
+//   unittest_Animation();
   
-  initDisplay("title");
+  initDisplay("foo bar");
+  std::cout << keycode::KC_F2 << std::endl;
   
-  std::cout << loadImageToStore("./gfx/frame01.png") << std::endl;
-  std::cout << loadImageToStore("./gfx/frame02.png") << std::endl;
-  std::cout << loadImageToStore("./gfx/frame03.png") << std::endl;
-  std::cout << loadImageToStore("./gfx/frame04.png") << std::endl;
-  std::cout << loadImageToStore("./gfx/frame05.png") << std::endl;
-  //std::cout << loadImageToStore("./gfx/sea01.png") << std::endl;
-  
-  putImage (0, 10, 10);
-  putImage (2, 60, 10);
-  showImage(4, -10, 100);
-  
-  std::cout << "done" << std::endl;
   return 0;
 }

@@ -16,6 +16,9 @@
 #include <CImg.h>
   using namespace cimg_library;
 
+// own
+#include "gfxSystem.hpp"
+
 // ========================================================================== //
 // module definitions
 

@@ -79,16 +79,8 @@ void  putImage(const int ID, int atX, int atY) {
   showBuffer.draw_image(atX, atY, store(ID) );
 }
 // .......................................................................... //
-void showImage(const int ID, int atX, int atY, bool reset) {
-  if (reset) {showBuffer.fill(0);}
-  
-  putImage(ID, atX, atY);
-  
-  display.display( showBuffer );
-  //display.show();
-  
-  while (!display.is_closed() && !display.is_keyESC() ) {
-    cimg::wait(20);
-  }
+void showImage(const int ID) {
+  display.display( store(ID) );
+  while (!display.is_closed() && !display.is_keyESC() ) {cimg::wait(20);}
 }
 // -------------------------------------------------------------------------- //
