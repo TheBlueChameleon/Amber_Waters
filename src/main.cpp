@@ -15,10 +15,10 @@
 // proc
 
 int main () {
-//   unittest_Animation();
 //   unittest_gfxSystem();
+  unittest_Animation();
   
-  unittest_XML();
+//   unittest_XML();
   
   return 0;
 }

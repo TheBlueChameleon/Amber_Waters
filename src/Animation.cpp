@@ -12,7 +12,11 @@
 #include <string>
   using namespace std::string_literals;
 
+// lib
+#include "pugixml.hpp"
+
 // own
+#include "globals.hpp"
 #include "gfxSystem.hpp"
 #include "Animation.hpp"
 
@@ -41,23 +45,63 @@ Animation::Animation(std::vector<int> frameIDs) {
   frameCount = frameIDs.size();
 }
 // .......................................................................... //
-Animation::Animation(std::vector<std::string> filenames) {
-  for (auto & file : filenames) {frames.push_back( gfxStore_load(file) );}
-  frameCount = frames.size();
-}
+Animation::Animation(std::vector<std::string> filenames) {loadFrames    (filenames);}
+// .......................................................................... //
+Animation::Animation(            std::string  filename ) {loadDefinition(filename );}
 
 // ========================================================================== //
 // getter / setter
 
+void                     Animation::reset() {
+  frames.clear();
+  frameCount   = 0;
+  currentFrame = 0;
+}
+// -------------------------------------------------------------------------- //
 int                      Animation::getFrameCount() const {return frameCount;}
 // .......................................................................... //
 const std::vector<int> & Animation::getFrames    () const {return frames;}
+
+// ========================================================================== //
+// loader
+
+void                     Animation::loadFrames(std::vector<std::string> filenames) {
+  for (auto & file : filenames) {frames.push_back( gfxStore_load(file) );}
+  frameCount += frames.size();
+}
+// .......................................................................... //
+void                     Animation::loadDefinition (std::string              filename ) {
+  reset();
+  
+  auto doc = loadXML(filename, "animation");
+  auto nodeAnimation = doc.child("animation");
+  
+  std::vector<std::string> frames;
+  std::string              current;
+  
+  for (auto node = nodeAnimation.child("frame"); node; node = node.next_sibling("frame")) {
+    
+    current = node.attribute("file").value();
+    auto attr = node.attribute("repeat");
+    for (auto i = 0; i < attr.as_int(1); ++i) {
+      frames.push_back(current);
+    }
+  }
+  
+  loadFrames(frames);
+}
 
 // ========================================================================== //
 // onscreen features
 
 void Animation::show(double fps) {
   int delay = 1000 / fps;
+  
+  if (!frameCount) {
+    throw std::runtime_error(THROWTEXT(
+      "    Attempted to show animation without frames"
+    ));
+  }
   
   GfxBox_t box = {
     getScrWidth() - 100, getScrHeight() - 20,
@@ -83,3 +127,4 @@ void Animation::show(double fps) {
     cimg_wait(delay);
   }
 }
+// -------------------------------------------------------------------------- //

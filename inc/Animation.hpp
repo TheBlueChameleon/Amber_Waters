@@ -27,13 +27,22 @@ public:
   // CTor, DTor
   
   Animation(std::vector<int>         frames);
-  Animation(std::vector<std::string> filenames);
+  Animation(std::vector<std::string> filenames);                                // expects a vector of picture file names
+  Animation(std::string              filename);                                 // expects an XML file name identifying a valid Animation description
   
   // ------------------------------------------------------------------------ //
   // getter / setter
   
+  void reset();
+  
   int                      getFrameCount() const;
   const std::vector<int> & getFrames() const;
+  
+  // ------------------------------------------------------------------------ //
+  // loader
+  
+  void loadFrames     (std::vector<std::string> filenames);
+  void loadDefinition (std::string              filename );
   
   // ------------------------------------------------------------------------ //
   // onscreen features

@@ -82,19 +82,31 @@ void unittest_gfxSystem() {
 }
 // -------------------------------------------------------------------------- //
 void unittest_Animation() {
-  std::vector<std::string> dataFiles = {
-    "./gfx-unittest/sea01.png",
-    "./gfx-unittest/sea02.png",
-    "./gfx-unittest/sea03.png",
-    "./gfx-unittest/sea04.png",
-    "./gfx-unittest/sea05.png"
-  };
+//   Stock Code -- replaced by XML facility
+//   std::vector<std::string> dataFiles = {
+//     "./gfx-unittest/sea01.png",
+//     "./gfx-unittest/sea02.png",
+//     "./gfx-unittest/sea03.png",
+//     "./gfx-unittest/sea04.png",
+//     "./gfx-unittest/sea05.png"
+//   };
+//   Animation ani(dataFiles);
+  
+  std::vector<std::string> empty;
   
   std::cout << "### CLASS ANIMATION UNIT TEST" << std::endl;
   initDisplay("ANIMATION UNIT TEST");
   
+  try {
+    Animation noFrames(empty);
+    noFrames.show();
+  }
+  catch (std::runtime_error & e) {
+    std::cout << "prevented showing empty animation:" << std::endl;
+    std::cout << e.what() << std::endl;
+  }
   
-  Animation ani(dataFiles);
+  Animation ani("./xml-unittest/animation-pure.xml");
   
   ani.show();
   
@@ -107,6 +119,7 @@ void unittest_XML () {
     
     try {
       auto doc = loadXML("non-existing-file");
+      std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
       std::cout << "prevented loading non-existing file:" << std::endl;
@@ -118,6 +131,7 @@ void unittest_XML () {
     
     try {
       auto doc = loadXML("xml-unittest/invalid-project-implicit.xml");
+      std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
       std::cout << "prevented loading file from wrong project:" << std::endl;
@@ -129,6 +143,7 @@ void unittest_XML () {
     
     try {
       auto doc = loadXML("xml-unittest/invalid-project-missing-name.xml");
+      std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
       std::cout << "prevented loading file from undisclosed project:" << std::endl;
@@ -140,6 +155,7 @@ void unittest_XML () {
     
     try {
       auto doc = loadXML("xml-unittest/invalid-project-explicit.xml");
+      std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
       std::cout << "prevented loading file from wrong but related project:" << std::endl;
@@ -151,6 +167,7 @@ void unittest_XML () {
     
     try {
       auto doc = loadXML("xml-unittest/invalid-version-missing.xml");
+      std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
       std::cout << "prevented loading file with no version data:" << std::endl;
@@ -162,6 +179,7 @@ void unittest_XML () {
     
     try {
       auto doc = loadXML("xml-unittest/invalid-version-major.xml");
+      std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
       std::cout << "prevented loading file from wrong major version:" << std::endl;
@@ -173,6 +191,7 @@ void unittest_XML () {
     
     try {
       auto doc = loadXML("xml-unittest/invalid-version-minor.xml");
+      std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
       std::cout << "prevented loading file from wrong minor version:" << std::endl;
@@ -184,6 +203,7 @@ void unittest_XML () {
     
     try {
       auto doc = loadXML("xml-unittest/invalid-version-text.xml");
+      std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
       std::cout << "prevented loading file from ill formed version:" << std::endl;
@@ -193,7 +213,22 @@ void unittest_XML () {
     
     
     
+    try {
+      auto doc = loadXML("xml-unittest/tile-animation-reference.xml", "other content");
+      std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
+    }
+    catch (std::runtime_error & e) {
+      std::cout << "prevented loading with non-matching content:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    std::cout << std::endl;
+    
+    
+    
     auto doc = loadXML("xml-unittest/tile-animation-reference.xml");
-    std::cout << "project name: " << doc.child("project").attribute("name").value() << std::endl;
+    std::cout << "found following first level nodes" << std::endl;
+    for (auto node = doc.first_child(); node; node = node.next_sibling()) {
+      std::cout << "* " << node.name() << std::endl;
+    }
   }
 }

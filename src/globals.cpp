@@ -21,7 +21,7 @@
 // ========================================================================== //
 // XML convenience
 
-pugi::xml_document loadXML(const std::string & filename, const std::string & content) {
+pugi::xml_node loadXML(const std::string & filename, const std::string & content) {
   /* Loads the document specified by <filename>
    * Performs project and version check
    * Returns XML handle on success
@@ -60,15 +60,7 @@ pugi::xml_document loadXML(const std::string & filename, const std::string & con
     ));
   }
   
-  auto attribName = nodeProject.attribute("name");
-  if (not attribName) {
-    throw std::runtime_error(THROWTEXT(
-      "    Invalid file '"s + filename + "'.\n"
-      "    Couldn't find project name"
-    ));
-  }
-  
-  if ( std::strcmp(attribName.value(), PROJECT_NAME) ) {
+  if ( std::strcmp(nodeProject.attribute("name").value(), PROJECT_NAME) ) {
     throw std::runtime_error(THROWTEXT(
       "    Invalid file '"s + filename + "'.\n"
       "    Not part of project '" + PROJECT_NAME + "'"
@@ -100,20 +92,7 @@ pugi::xml_document loadXML(const std::string & filename, const std::string & con
   }
   
   auto nodeMajor = nodeVersion.child("major");
-  if (not nodeMajor) {
-    throw std::runtime_error(THROWTEXT(
-      "    Invalid file '"s + filename + "'.\n"
-      "    Couldn't find version major tag"
-    ));
-  }
-  
   auto nodeMinor = nodeVersion.child("minor");
-  if (not nodeMinor) {
-    throw std::runtime_error(THROWTEXT(
-      "    Invalid file '"s + filename + "'.\n"
-      "    Couldn't find version minor tag"
-    ));
-  }
   
   auto major = nodeMajor.attribute("value").as_int(-1);
   auto minor = nodeMinor.attribute("value").as_int(-1);
@@ -145,7 +124,25 @@ pugi::xml_document loadXML(const std::string & filename, const std::string & con
     }
   }
   
-  std::cout << "version " << major << "." << minor << std::endl;
   
-  return doc;
+  // ........................................................................ //
+  // check content (if specified)
+  
+  /* content is a node directly under the project node. It has a single 
+   * attribute name.
+   * If argument content is nonzero, this will be checked for equality.
+   */
+  
+  if ( content.size() ) {
+    auto fileContent = nodeProject.child("content").attribute("value").value();
+    if ( std::strcmp( fileContent, content.data() ) ) {
+      throw std::runtime_error(THROWTEXT(
+        "    Invalid content\n"
+        "    Expected: '"s + content + "'\n"
+        "    Found   : '"s + fileContent + "'"
+      ));
+    }
+  }
+  
+  return nodeProject;
 }

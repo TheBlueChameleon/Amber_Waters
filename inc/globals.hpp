@@ -26,6 +26,6 @@
 // ========================================================================== //
 // XML convenience
 
-pugi::xml_document loadXML(const std::string & filename, const std::string & content = "");
+pugi::xml_node loadXML(const std::string & filename, const std::string & content = "");
 
 #endif

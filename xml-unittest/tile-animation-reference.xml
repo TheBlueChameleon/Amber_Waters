@@ -4,8 +4,9 @@
   <version>
     <major value="1" />
     <minor value="1" />
-    <content value="Tile" />
   </version>
+  
+  <content value="tile" />
   
   <properties>
     <name value="sea" />
