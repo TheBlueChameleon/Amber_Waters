@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Amber Waters">
+  <version>
+    <major value="1" />
+    <minor value="1" />
+    <content value="Tile" />
+  </version>
+  
+  <properties>
+    <name value="sea" />
+  </properties>
+
+  <animation source="animation-pure.xml" />
+</project>

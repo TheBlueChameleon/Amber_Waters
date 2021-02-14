@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Something else">
+  <version>
+    <major value="0" />
+    <minor value="1" />
+    <content value="Animation" />
+  </version>
+</project>

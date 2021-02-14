@@ -136,10 +136,10 @@ namespace keycode {
 // ========================================================================== //
 // misc (gfxGlobals)
 
-extern long          (* cimg_wait) (const unsigned int milliseconds );
+extern long          (* cimg_wait)  (const unsigned int milliseconds );
 extern unsigned long (* cimg_timer) (void);
-extern unsigned long (* cimg_tic)  (void);
-extern unsigned long (* cimg_toc)  (void);
+extern unsigned long (* cimg_tic)   (void);
+extern unsigned long (* cimg_toc)   (void);
 
 // ========================================================================== //
 // gfx store

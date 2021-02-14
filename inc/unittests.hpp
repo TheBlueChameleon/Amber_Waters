@@ -16,5 +16,6 @@
 
 void unittest_gfxSystem();
 void unittest_Animation();
+void unittest_XML ();
 
 #endif

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Amber Waters">
+  <version>
+    <major value="0" />
+    <minor value="99" />
+    <content value="Animation" />
+  </version>
+
+  <animation>
+    <frame file="../gfx-unittest/frame01.png" />
+    <frame file="../gfx-unittest/frame02.png" />
+    <frame file="../gfx-unittest/frame03.png" />
+    <frame file="../gfx-unittest/frame04.png" />
+    <frame file="../gfx-unittest/frame05.png" />
+    <frame file="../gfx-unittest/frame06.png" />
+    <frame file="../gfx-unittest/frame07.png" />
+    <frame file="../gfx-unittest/frame08.png" />
+    <frame file="../gfx-unittest/frame09.png" />
+    <frame file="../gfx-unittest/frame10.png" />
+  </animation>
+</project>

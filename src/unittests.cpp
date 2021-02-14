@@ -10,7 +10,11 @@
 #include <vector>
 #include <string>
 
+// LIB
+#include "pugixml.hpp"
+
 // own
+#include "globals.hpp"
 #include "gfxSystem.hpp"
 #include "Animation.hpp"
 
@@ -95,4 +99,101 @@ void unittest_Animation() {
   ani.show();
   
   std::cout << "### CLASS ANIMATION UNIT TEST DONE" << std::endl << std::endl;
+}
+// -------------------------------------------------------------------------- //
+void unittest_XML () {
+  {
+    std::cout << "### LOADING AND VALIDATING GENERIC XML PROJECT FILES" << std::endl;
+    
+    try {
+      auto doc = loadXML("non-existing-file");
+    }
+    catch (std::runtime_error & e) {
+      std::cout << "prevented loading non-existing file:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    std::cout << std::endl;
+    
+    
+    
+    try {
+      auto doc = loadXML("xml-unittest/invalid-project-implicit.xml");
+    }
+    catch (std::runtime_error & e) {
+      std::cout << "prevented loading file from wrong project:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    std::cout << std::endl;
+    
+    
+    
+    try {
+      auto doc = loadXML("xml-unittest/invalid-project-missing-name.xml");
+    }
+    catch (std::runtime_error & e) {
+      std::cout << "prevented loading file from undisclosed project:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    std::cout << std::endl;
+    
+    
+    
+    try {
+      auto doc = loadXML("xml-unittest/invalid-project-explicit.xml");
+    }
+    catch (std::runtime_error & e) {
+      std::cout << "prevented loading file from wrong but related project:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    std::cout << std::endl;
+    
+    
+    
+    try {
+      auto doc = loadXML("xml-unittest/invalid-version-missing.xml");
+    }
+    catch (std::runtime_error & e) {
+      std::cout << "prevented loading file with no version data:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    std::cout << std::endl;
+    
+    
+    
+    try {
+      auto doc = loadXML("xml-unittest/invalid-version-major.xml");
+    }
+    catch (std::runtime_error & e) {
+      std::cout << "prevented loading file from wrong major version:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    std::cout << std::endl;
+    
+    
+    
+    try {
+      auto doc = loadXML("xml-unittest/invalid-version-minor.xml");
+    }
+    catch (std::runtime_error & e) {
+      std::cout << "prevented loading file from wrong minor version:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    std::cout << std::endl;
+    
+    
+    
+    try {
+      auto doc = loadXML("xml-unittest/invalid-version-text.xml");
+    }
+    catch (std::runtime_error & e) {
+      std::cout << "prevented loading file from ill formed version:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+    std::cout << std::endl;
+    
+    
+    
+    auto doc = loadXML("xml-unittest/tile-animation-reference.xml");
+    std::cout << "project name: " << doc.child("project").attribute("name").value() << std::endl;
+  }
 }
