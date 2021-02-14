@@ -36,7 +36,11 @@ public:
   void reset();
   
   int                      getFrameCount() const;
+  int                      getCurrentFrame() const;
+  int                      getCurrentImageID() const;
   const std::vector<int> & getFrames() const;
+  
+  void advanceFrame();
   
   // ------------------------------------------------------------------------ //
   // loader
@@ -47,7 +51,7 @@ public:
   // ------------------------------------------------------------------------ //
   // onscreen features
   
-  void show(double fps = 60.0);
+  void show(bool tiled = false, double fps = 60.0);
 };
 
 #endif

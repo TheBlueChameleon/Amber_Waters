@@ -9,6 +9,7 @@
 // dependencies
 
 #include <string>
+#include <utility>
 
 // ========================================================================== //
 // gfx store
@@ -17,6 +18,8 @@
 // getter
 
 int getStoreSize();
+
+std::pair<int, int> getImageDimensions(const int ID);
 
 // -------------------------------------------------------------------------- //
 // store state control

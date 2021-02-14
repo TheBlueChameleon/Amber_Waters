@@ -47,9 +47,9 @@ void unittest_Animation() {
     std::cout << e.what() << std::endl;
   }
   
-  Animation ani("./xml-unittest/animation-pure.xml");
+  Animation ani("./xml-unittest/animation-sea.xml");
   
-  ani.show();
+  ani.show(true, 12);
   
   std::cout << "### CLASS ANIMATION UNIT TEST DONE" << std::endl << std::endl;
 }

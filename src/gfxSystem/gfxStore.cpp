@@ -8,6 +8,8 @@
 #include <vector>
 #include <string>
   using namespace std::string_literals;
+
+#include <utility>
 #include <algorithm>
 
 #include <filesystem>
@@ -26,6 +28,8 @@
 
 #define THROWTEXT(msg) ("RUNTIME EXCEPTION IN "s + (__PRETTY_FUNCTION__) + "\n"s + msg)
 
+#define CHECK_GFX_INDEX(ID) {if ( (ID < 0) || (ID >= gfxStoreSize) ) {throw std::out_of_range(THROWTEXT("  Invalid GfxStore ID: "s + std::to_string(ID)));}}
+
 // ========================================================================== //
 // gfx store
 
@@ -33,7 +37,12 @@
 // getter
 
 int getStoreSize() {return gfxStoreSize;}
-
+// .......................................................................... //
+std::pair<int, int> getImageDimensions(const int ID) {
+  CHECK_GFX_INDEX(ID);
+  auto & img = gfxStore(ID);
+  return std::make_pair(img.width(), img.height());
+}
 // -------------------------------------------------------------------------- //
 // store state control
 
@@ -41,7 +50,7 @@ int gfxStore_load (const std::string & filename) {
   // attempts to load filename into memory
   // returns store ID on success
   // throws an error, otherwise.
-  // if filena already in store, does not load it twice, but repeats older ID
+  // if filename already in store, does not load it twice, but repeats older ID
   
   if (!fs::exists(filename)) {
     throw std::runtime_error(THROWTEXT(
@@ -71,16 +80,12 @@ int gfxStore_load (const std::string & filename) {
 // onscreen features
 
 void  putImage(const int ID, int atX, int atY) {
-  if ( (ID < 0) || (ID >= gfxStoreSize) ) {
-    throw std::out_of_range(THROWTEXT(
-      "  Invalid GfxStore ID: "s + std::to_string(ID)
-    ));
-  }
-  
+  CHECK_GFX_INDEX(ID);
   showBuffer.draw_image(atX, atY, gfxStore(ID) );
 }
 // .......................................................................... //
 void showImage(const int ID) {
+  CHECK_GFX_INDEX(ID);
   display.flush();
   display.display( gfxStore(ID) );
   while (!display.is_closed() && !display.is_key() ) {cimg::wait(20);}

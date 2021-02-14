@@ -6,11 +6,7 @@
     <minor value="1" />
   </version>
   
-  <content value="tile" />
-  
-  <properties>
-    <name value="sea" />
-  </properties>
+  <content value="animation" />
 
   <animation>
     <frame file="./gfx-unittest/sea01.png" />

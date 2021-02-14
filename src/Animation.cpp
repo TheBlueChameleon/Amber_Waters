@@ -12,6 +12,8 @@
 #include <string>
   using namespace std::string_literals;
 
+#include <utility>
+
 // lib
 #include "pugixml.hpp"
 
@@ -60,7 +62,13 @@ void                     Animation::reset() {
 // -------------------------------------------------------------------------- //
 int                      Animation::getFrameCount() const {return frameCount;}
 // .......................................................................... //
-const std::vector<int> & Animation::getFrames    () const {return frames;}
+int                      Animation::getCurrentFrame() const {return currentFrame;}
+// .......................................................................... //
+int                      Animation::getCurrentImageID() const {return frames[currentFrame];}
+// .......................................................................... //
+const std::vector<int> & Animation::getFrames () const {return frames;}
+// -------------------------------------------------------------------------- //
+void                     Animation::advanceFrame() {ADVANCEFRAME();}
 
 // ========================================================================== //
 // loader
@@ -94,7 +102,7 @@ void                     Animation::loadDefinition (std::string              fil
 // ========================================================================== //
 // onscreen features
 
-void Animation::show(double fps) {
+void Animation::show(bool tiled, double fps) {
   int delay = 1000 / fps;
   
   if (!frameCount) {
@@ -103,9 +111,12 @@ void Animation::show(double fps) {
     ));
   }
   
+  auto scrWidth  = getScrWidth ();
+  auto scrHeight = getScrHeight();
+  
   GfxBox_t box = {
-    getScrWidth() - 100, getScrHeight() - 20,
-    getScrWidth() -   0, getScrHeight() -  0,
+    scrWidth - 100, scrHeight - 20,
+    scrWidth -   0, scrHeight -  0,
     gfxColor::BLUE,
     gfxColor::WHITE,
     gfxColor::WHITE,
@@ -116,8 +127,20 @@ void Animation::show(double fps) {
   display_flush();
   
   while (!display_is_closed() && !display_is_any_key() ) {
+    auto frameID = frames[currentFrame];
     
-    putImage( frames[currentFrame] );
+    if (tiled) {
+      auto dimensions = getImageDimensions(frameID);
+      
+      for   (auto y = 0; y < scrHeight; y += dimensions.second) {
+        for (auto x = 0; x < scrWidth ; x += dimensions.first ) {
+          putImage( frameID, x, y );
+        }
+      }
+      
+    } else {
+      putImage( frameID );
+    }
     
     drawBoxedText("fps: "s + std::to_string(display_frames_per_second()), box);
     
