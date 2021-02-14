@@ -16,9 +16,9 @@
 
 int main () {
 //   unittest_gfxSystem();
-  unittest_Animation();
-  
+//   unittest_Animation();
 //   unittest_XML();
+  unittest_input ();
   
   return 0;
 }

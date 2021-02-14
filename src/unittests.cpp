@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <string>
+  using namespace std::string_literals;
 
 // LIB
 #include "pugixml.hpp"
@@ -19,6 +20,43 @@
 #include "Animation.hpp"
 
 // ========================================================================== //
+// Class Unit Tests
+
+void unittest_Animation() {
+//   Stock Code -- replaced by XML facility
+//   std::vector<std::string> dataFiles = {
+//     "./gfx-unittest/sea01.png",
+//     "./gfx-unittest/sea02.png",
+//     "./gfx-unittest/sea03.png",
+//     "./gfx-unittest/sea04.png",
+//     "./gfx-unittest/sea05.png"
+//   };
+//   Animation ani(dataFiles);
+  
+  std::vector<std::string> empty;
+  
+  std::cout << "### CLASS ANIMATION UNIT TEST" << std::endl;
+  initDisplay("ANIMATION UNIT TEST");
+  
+  try {
+    Animation noFrames(empty);
+    noFrames.show();
+  }
+  catch (std::runtime_error & e) {
+    std::cout << "prevented showing empty animation:" << std::endl;
+    std::cout << e.what() << std::endl;
+  }
+  
+  Animation ani("./xml-unittest/animation-pure.xml");
+  
+  ani.show();
+  
+  std::cout << "### CLASS ANIMATION UNIT TEST DONE" << std::endl << std::endl;
+}
+// -------------------------------------------------------------------------- //
+
+// ========================================================================== //
+// System Unit Tests
 
 void unittest_gfxSystem() {
   std::vector<std::string> dataFiles = {
@@ -43,6 +81,7 @@ void unittest_gfxSystem() {
   
   
   std::cout << "showing one image in the store..." << std::flush;
+
   
     showImage(0);
 
@@ -81,36 +120,31 @@ void unittest_gfxSystem() {
   std::cout << "### GFX SYSTEM UNIT TEST DONE" << std::endl << std::endl;
 }
 // -------------------------------------------------------------------------- //
-void unittest_Animation() {
-//   Stock Code -- replaced by XML facility
-//   std::vector<std::string> dataFiles = {
-//     "./gfx-unittest/sea01.png",
-//     "./gfx-unittest/sea02.png",
-//     "./gfx-unittest/sea03.png",
-//     "./gfx-unittest/sea04.png",
-//     "./gfx-unittest/sea05.png"
-//   };
-//   Animation ani(dataFiles);
+void unittest_AnimationStore() {
   
-  std::vector<std::string> empty;
+}
+// -------------------------------------------------------------------------- //
+void unittest_input () {
+  initDisplay("Input test window");
   
-  std::cout << "### CLASS ANIMATION UNIT TEST" << std::endl;
-  initDisplay("ANIMATION UNIT TEST");
+  GfxBox_t
+    boxPressEsc    = {0,   0, 200, 20, gfxColor::RED},
+    boxMouseCoords = {0,  20, 200, 40};
   
-  try {
-    Animation noFrames(empty);
-    noFrames.show();
+  bool done = false;
+  while (not done) {
+    done = display_is_key (keycode::KC_ESC);
+    
+    drawBoxedText("Press ESC to continue", boxPressEsc);
+    drawBoxedText(
+      "Mouse at ("s + std::to_string(display_mouse_x()) + ", "+ std::to_string(display_mouse_y()) + ", "+ std::to_string(display_button()) + ")", 
+      boxMouseCoords
+    );
+    
+    showDisplay();
+    cimg_wait(1);
+    
   }
-  catch (std::runtime_error & e) {
-    std::cout << "prevented showing empty animation:" << std::endl;
-    std::cout << e.what() << std::endl;
-  }
-  
-  Animation ani("./xml-unittest/animation-pure.xml");
-  
-  ani.show();
-  
-  std::cout << "### CLASS ANIMATION UNIT TEST DONE" << std::endl << std::endl;
 }
 // -------------------------------------------------------------------------- //
 void unittest_XML () {
@@ -118,7 +152,7 @@ void unittest_XML () {
     std::cout << "### LOADING AND VALIDATING GENERIC XML PROJECT FILES" << std::endl;
     
     try {
-      auto doc = loadXML("non-existing-file");
+      [[maybe_unused]] auto doc = loadXML("non-existing-file");
       std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
@@ -130,7 +164,7 @@ void unittest_XML () {
     
     
     try {
-      auto doc = loadXML("xml-unittest/invalid-project-implicit.xml");
+      [[maybe_unused]] auto doc = loadXML("xml-unittest/invalid-project-implicit.xml");
       std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
@@ -142,7 +176,7 @@ void unittest_XML () {
     
     
     try {
-      auto doc = loadXML("xml-unittest/invalid-project-missing-name.xml");
+      [[maybe_unused]] auto doc = loadXML("xml-unittest/invalid-project-missing-name.xml");
       std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
@@ -154,7 +188,7 @@ void unittest_XML () {
     
     
     try {
-      auto doc = loadXML("xml-unittest/invalid-project-explicit.xml");
+      [[maybe_unused]] auto doc = loadXML("xml-unittest/invalid-project-explicit.xml");
       std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
@@ -166,7 +200,7 @@ void unittest_XML () {
     
     
     try {
-      auto doc = loadXML("xml-unittest/invalid-version-missing.xml");
+      [[maybe_unused]] auto doc = loadXML("xml-unittest/invalid-version-missing.xml");
       std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
@@ -178,7 +212,7 @@ void unittest_XML () {
     
     
     try {
-      auto doc = loadXML("xml-unittest/invalid-version-major.xml");
+      [[maybe_unused]] auto doc = loadXML("xml-unittest/invalid-version-major.xml");
       std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
@@ -190,7 +224,7 @@ void unittest_XML () {
     
     
     try {
-      auto doc = loadXML("xml-unittest/invalid-version-minor.xml");
+      [[maybe_unused]] auto doc = loadXML("xml-unittest/invalid-version-minor.xml");
       std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
@@ -202,7 +236,7 @@ void unittest_XML () {
     
     
     try {
-      auto doc = loadXML("xml-unittest/invalid-version-text.xml");
+      [[maybe_unused]] auto doc = loadXML("xml-unittest/invalid-version-text.xml");
       std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {
@@ -214,7 +248,7 @@ void unittest_XML () {
     
     
     try {
-      auto doc = loadXML("xml-unittest/tile-animation-reference.xml", "other content");
+      [[maybe_unused]] auto doc = loadXML("xml-unittest/tile-animation-reference.xml", "other content");
       std::cout << "!!! FAILED TO DETECT INVALID SITUATION" << std::endl;
     }
     catch (std::runtime_error & e) {

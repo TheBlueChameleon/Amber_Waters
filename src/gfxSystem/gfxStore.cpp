@@ -18,8 +18,8 @@
   using namespace cimg_library;
 
 // own
+#define GFXSYSTEM_INTERNALS
 #include "gfxSystem.hpp"
-#include "gfxSystem/gfxGlobals.hpp"
 
 // ========================================================================== //
 // local macro

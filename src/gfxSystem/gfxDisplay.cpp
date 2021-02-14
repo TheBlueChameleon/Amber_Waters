@@ -12,7 +12,8 @@
 #include <algorithm>
 
 // own
-#include "gfxSystem/gfxGlobals.hpp"
+#define GFXSYSTEM_INTERNALS
+#include "gfxSystem.hpp"
 
 // ========================================================================== //
 // local macro

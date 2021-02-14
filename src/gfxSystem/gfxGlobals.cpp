@@ -6,7 +6,8 @@
 #include <string>
 
 // own
-#include "gfxSystem/gfxGlobals.hpp"
+#define GFXSYSTEM_INTERNALS
+#include "gfxSystem.hpp"
 
 // ========================================================================== //
 // module globals
