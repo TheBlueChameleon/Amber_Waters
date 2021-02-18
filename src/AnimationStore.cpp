@@ -12,11 +12,15 @@
 
 // own
 #include "Animation.hpp"
+#include "AnimationStore.hpp"
   
 // ========================================================================== //
 // local macro
 
 #define THROWTEXT(msg) ("RUNTIME EXCEPTION IN "s + (__PRETTY_FUNCTION__) + "\n"s + msg)
+
+#define CHECK_STORE_INDEX(ID) {if ( (ID < 0) || (ID >= AnimationStoreSize) ) {throw std::out_of_range(THROWTEXT("  Invalid AnimationStore ID: "s + std::to_string(ID)));}}
+
 
 // ========================================================================== //
 // Animation Store globals
@@ -32,6 +36,12 @@ int                      AnimationStoreSize;
 // getters
 
 const std::vector<Animation>   & getAnimationStore    () {return AnimationStore;}
+// .......................................................................... //
+const Animation                & getAnimation (const int storeID) {
+  CHECK_STORE_INDEX(storeID);
+  
+  return AnimationStore[storeID];
+}
 // .......................................................................... //
 const std::vector<std::string> & getAnimationFilenames() {return AnimationFilenames;}
 // .......................................................................... //
@@ -53,21 +63,26 @@ int AnimationStore_load (const std::string & filename) {
   }
   
   // check whether filename already in store
-  auto inStoreIterator = std::find(AnimationFilenames.begin(), AnimationFilenames.end(), filename);
+  int storeID = AnimationStore_find(filename);
   
-  if ( inStoreIterator == AnimationFilenames.end() ) {                          // not yet in store -- add
+  if ( storeID == -1 ) {                                                        // not yet in store -- add
     auto newAni = Animation(filename);
     AnimationStore.push_back(newAni);
-    
     AnimationFilenames.push_back(filename);
-    
     return AnimationStoreSize++;
     
   } else {                                                                      // otherwise -- repeat old ID
-    return std::distance(AnimationFilenames.begin(), inStoreIterator);
+    return storeID;
     
   }
   
+}
+// .......................................................................... //
+int AnimationStore_find (const std::string & filename) {
+  auto inStoreIterator = std::find(AnimationFilenames.begin(), AnimationFilenames.end(), filename);
+  
+  if ( inStoreIterator == AnimationFilenames.end() )  {return -1;} 
+  else                                                {return std::distance(AnimationFilenames.begin(), inStoreIterator);}
 }
 // .......................................................................... //
 void AnimationStore_advanceFrames() {

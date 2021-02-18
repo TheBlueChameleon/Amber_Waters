@@ -48,9 +48,19 @@ public:
   // ------------------------------------------------------------------------ //
   // loader
   
+  /* loaders never call reset(), i.e. they all append frames to the current 
+   * state.
+   * XML loaders support references; they are resolved by means of the 
+   * AnimationStore. That is, Animations already in store are not read from file
+   * but simply copied from memory. Animations not yet in store are resolved
+   * recursively and added to the store in each level.
+   */
+  
   void loadFrames     (const std::vector<std::string> & filenames);
   void loadDefinition (const std::string              & filename );
   void loadDefinition (const pugi::xml_node           & node);
+  
+  void addFromStore   (const int storeID);
   
   // ------------------------------------------------------------------------ //
   // onscreen features

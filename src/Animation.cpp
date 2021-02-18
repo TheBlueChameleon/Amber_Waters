@@ -22,6 +22,7 @@
 #include "globals.hpp"
 #include "gfxSystem.hpp"
 #include "Animation.hpp"
+#include "AnimationStore.hpp"
 
 // ========================================================================== //
 // local macro
@@ -80,8 +81,6 @@ void                     Animation::loadFrames(const std::vector<std::string> & 
 }
 // .......................................................................... //
 void                     Animation::loadDefinition (const std::string & filename ) {
-  reset();
-  
   auto doc = loadXML(filename, "animation");
   loadDefinition(doc);
 }
@@ -92,8 +91,9 @@ void                     Animation::loadDefinition (const pugi::xml_node & doc) 
   
   auto ref = nodeAnimation.attribute("source");
   if ( ref ) {
-    auto subdoc = loadXML(ref.value(), "animation");
-    loadDefinition(subdoc);
+    auto repetitions = nodeAnimation.attribute("repeat").as_int(1);
+    auto storeID     = AnimationStore_load( ref.value() );
+    for (auto i=0; i<repetitions; ++i) {addFromStore(storeID);}
   }
   
   std::vector<std::string> frames;
@@ -108,15 +108,23 @@ void                     Animation::loadDefinition (const pugi::xml_node & doc) 
     } else if ( !std::strcmp(node.name(), "animation") ) {
       ref = node.attribute("source");
       if ( ref ) {
-        auto subdoc = loadXML(ref.value(), "animation");
-        auto attr = node.attribute("repeat");
-        for (auto i = 0; i < attr.as_int(1); ++i) {loadDefinition(subdoc);}
+        auto repetitions = node.attribute("repeat").as_int(1);
+        auto storeID     = AnimationStore_load( ref.value() );
+        for (auto i=0; i<repetitions; ++i) {addFromStore(storeID);}
       }
+      
     }
     
   }
   
   loadFrames(frames);
+}
+// -------------------------------------------------------------------------- //
+void                     Animation::addFromStore   (const int storeID) {
+  const std::vector<int> & storeContent = getAnimation(storeID).frames;
+  
+  frames.insert( frames.end(), storeContent.begin(), storeContent.end() );
+  frameCount += storeContent.size();
 }
 
 // ========================================================================== //
