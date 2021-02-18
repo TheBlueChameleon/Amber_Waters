@@ -12,6 +12,7 @@
 #include <string>
   using namespace std::string_literals;
 
+#include <cstring>
 #include <utility>
 
 // lib
@@ -73,27 +74,46 @@ void                     Animation::advanceFrame() {ADVANCEFRAME();}
 // ========================================================================== //
 // loader
 
-void                     Animation::loadFrames(std::vector<std::string> filenames) {
+void                     Animation::loadFrames(const std::vector<std::string> & filenames) {
   for (auto & file : filenames) {frames.push_back( gfxStore_load(file) );}
-  frameCount += frames.size();
+  frameCount += filenames.size();
 }
 // .......................................................................... //
-void                     Animation::loadDefinition (std::string              filename ) {
+void                     Animation::loadDefinition (const std::string & filename ) {
   reset();
   
   auto doc = loadXML(filename, "animation");
-  auto nodeAnimation = doc.child("animation");
+  loadDefinition(doc);
+}
+// .......................................................................... //
+void                     Animation::loadDefinition (const pugi::xml_node & doc) {
+  auto root = doc.child("project");
+  auto nodeAnimation = root.child("animation");
+  
+  auto ref = nodeAnimation.attribute("source");
+  if ( ref ) {
+    auto subdoc = loadXML(ref.value(), "animation");
+    loadDefinition(subdoc);
+  }
   
   std::vector<std::string> frames;
   std::string              current;
   
-  for (auto node = nodeAnimation.child("frame"); node; node = node.next_sibling("frame")) {
-    
-    current = node.attribute("file").value();
-    auto attr = node.attribute("repeat");
-    for (auto i = 0; i < attr.as_int(1); ++i) {
-      frames.push_back(current);
+  for (auto node = nodeAnimation.first_child(); node; node = node.next_sibling()) {
+    if        ( !std::strcmp(node.name(), "frame") ) {
+      current = node.attribute("file").value();
+      auto attr = node.attribute("repeat");
+      for (auto i = 0; i < attr.as_int(1); ++i) {frames.push_back(current);}
+      
+    } else if ( !std::strcmp(node.name(), "animation") ) {
+      ref = node.attribute("source");
+      if ( ref ) {
+        auto subdoc = loadXML(ref.value(), "animation");
+        auto attr = node.attribute("repeat");
+        for (auto i = 0; i < attr.as_int(1); ++i) {loadDefinition(subdoc);}
+      }
     }
+    
   }
   
   loadFrames(frames);

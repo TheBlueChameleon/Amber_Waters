@@ -12,6 +12,9 @@
 #include <vector>
 #include <string>
 
+// LIB
+#include "pugixml.hpp"
+
 // ========================================================================== //
 // class
 
@@ -45,8 +48,9 @@ public:
   // ------------------------------------------------------------------------ //
   // loader
   
-  void loadFrames     (std::vector<std::string> filenames);
-  void loadDefinition (std::string              filename );
+  void loadFrames     (const std::vector<std::string> & filenames);
+  void loadDefinition (const std::string              & filename );
+  void loadDefinition (const pugi::xml_node           & node);
   
   // ------------------------------------------------------------------------ //
   // onscreen features

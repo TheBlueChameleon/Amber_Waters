@@ -21,7 +21,7 @@
 // ========================================================================== //
 // XML convenience
 
-pugi::xml_node loadXML(const std::string & filename, const std::string & content) {
+pugi::xml_document loadXML(const std::string & filename, const std::string & content) {
   /* Loads the document specified by <filename>
    * Performs project and version check
    * Returns XML handle on success
@@ -144,5 +144,5 @@ pugi::xml_node loadXML(const std::string & filename, const std::string & content
     }
   }
   
-  return nodeProject;
+  return doc;
 }

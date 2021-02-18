@@ -47,7 +47,7 @@ void unittest_Animation() {
     std::cout << e.what() << std::endl;
   }
   
-  Animation ani("./xml-unittest/animation-sea.xml");
+  Animation ani("./xml-unittest/animation-ref.xml");
   
   ani.show(true, 12);
   
@@ -260,8 +260,9 @@ void unittest_XML () {
     
     
     auto doc = loadXML("xml-unittest/tile-animation-reference.xml");
+    auto root = doc.child("project");
     std::cout << "found following first level nodes" << std::endl;
-    for (auto node = doc.first_child(); node; node = node.next_sibling()) {
+    for (auto node = root.first_child(); node; node = node.next_sibling()) {
       std::cout << "* " << node.name() << std::endl;
     }
   }
